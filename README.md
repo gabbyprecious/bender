@@ -28,6 +28,13 @@ TODO
 
 Please look inside the test for the moment
 
+## How to contribute
+
+In order to compile it with `make` command you need to install golangci-lint and you find how to install it
+on the official [web site](https://golangci-lint.run/usage/install/)
+
+TODO add hacking guide
+
 ## Build with
 
 - [Package structure](https://github.com/golang-standards/project-layout)

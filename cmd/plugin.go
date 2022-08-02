@@ -1,7 +1,7 @@
 package main
 
 import (
-	core "github.com/cln-reckless/cln4go.plugin/pkg/plugin"
+	core "github.com/vincenzopalazzo/bender/pkg/plugin"
 
 	"github.com/vincenzopalazzo/cln4go/plugin"
 )

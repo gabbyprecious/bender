@@ -1,4 +1,4 @@
-module github.com/cln-reckless/cln4go.plugin
+module github.com/vincenzopalazzo/bender
 
 go 1.18
 

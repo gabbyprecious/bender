@@ -1,6 +1,6 @@
 CC=go
 FMT=gofmt
-NAME=cln4go-plugin
+NAME=bender
 BASE_DIR=/script
 OS=linux
 ARCH=386
