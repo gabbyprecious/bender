@@ -1,7 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/vincent/Github/bender'
-go fmt ./...
-golangci-lint run
-go build -o cln4go-plugin cmd/plugin.go
-make: Leaving directory '/home/vincent/Github/bender'
- 

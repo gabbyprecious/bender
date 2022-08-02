@@ -1,14 +1,14 @@
 <div align="center">
-  <h1>cln4go</h1>
+  <h1>bender</h1>
 
-  <img src="https://preview.redd.it/tcmyd3n69ng41.jpg?width=1999&format=pjpg&auto=webp&s=b79cf22d3e2adcaf52a2d22bcb0568e42eff8bc2" />
+  <img src="https://img.icons8.com/clouds/500/futurama-bender.png" />
 
   <p>
-    <strong> Go library for cln with flexible interface </strong>
+    <strong> A cln plugin that provide what you need </strong>
   </p>
 
   <h4>
-    <a href="https://github.com/vincenzopalazzo/cln4go">cln4go Homepage</a>
+    <a href="https://github.com/vincenzopalazzo/bender">Homepage</a>
   </h4>
 </div>
 
