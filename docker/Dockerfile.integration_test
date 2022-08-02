@@ -1,0 +1,33 @@
+FROM ubuntu:20.04
+LABEL mantainer="Vincenzo Palazzo vincenzopalazzodev@gmail.com"
+
+ENV TZ=Europe/Minsk
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Ubuntu utils
+RUN apt-get update && apt-get install -y \
+    software-properties-common build-essential wget tar && \
+    wget https://go.dev/dl/go1.18.4.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.18.4.linux-amd64.tar.gz
+ENV GOROOT=/usr/local/go
+ENV GOPATH=$HOME/go
+
+# Install bitcoin core and lightningd (last version)
+RUN add-apt-repository ppa:luke-jr/bitcoincore
+RUN apt-get update  && apt-get install -y bitcoind libsodium-dev libpq-dev jq make
+
+ENV CLIGHTNING_VERSION=0.11.2
+
+RUN wget https://github.com/ElementsProject/lightning/releases/download/v$CLIGHTNING_VERSION/clightning-v$CLIGHTNING_VERSION-Ubuntu-20.04.tar.xz && \
+    tar -xvf clightning-v$CLIGHTNING_VERSION-Ubuntu-20.04.tar.xz -C /opt && cd /opt && \
+    mv usr clightning-v$CLIGHTNING_VERSION
+
+RUN rm -r clightning-v$CLIGHTNING_VERSION-Ubuntu-20.04.tar.xz
+
+
+ENV PATH $PATH:/usr/local/go/bin
+ENV PATH=/opt/clightning-v$CLIGHTNING_VERSION/bin:$PATH
+
+WORKDIR workdir
+
+CMD ["./entrypoint.sh"]

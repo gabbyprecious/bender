@@ -1,0 +1,6 @@
+github.com/vincenzopalazzo/cln4go/client v0.0.0-20220802085837-fb816fecb890 h1:ylUf6ddD7TGHC+CXrAq0EQr5EsPVRYuiHDlPs1AIXf4=
+github.com/vincenzopalazzo/cln4go/client v0.0.0-20220802085837-fb816fecb890/go.mod h1:7X4Hn+hwG3Ts/S3tgEqsowfUHZqyjx7/1z/8oDw7Muw=
+github.com/vincenzopalazzo/cln4go/comm v0.0.0-20220802085837-fb816fecb890 h1:NvP9FlygyCWYaZizyxTdGBe3yRuzPzdnoxz3g28PAps=
+github.com/vincenzopalazzo/cln4go/comm v0.0.0-20220802085837-fb816fecb890/go.mod h1:zyOWcz5aSHCsLuZLaVBTjbRnxlf5Ac+Rfhu5Ciuyy2c=
+github.com/vincenzopalazzo/cln4go/plugin v0.0.0-20220802085837-fb816fecb890 h1:L32YhQYlO2CeIp7AvjfN8ozuEba1R5/vi2bpH91B5mM=
+github.com/vincenzopalazzo/cln4go/plugin v0.0.0-20220802085837-fb816fecb890/go.mod h1:vb+knVG7/MR+oTnDRRwDH7WqO6U0FbcRNWjQeu0xdds=
