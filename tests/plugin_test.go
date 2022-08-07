@@ -13,7 +13,7 @@ func TestCallFistMethod(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	response, err := client.Call("hello", make(map[string]interface{}))
+	response, err := client.Call("bender_run_server", make(map[string]interface{}))
 	if err != nil {
 		panic(err)
 	}
@@ -23,7 +23,7 @@ func TestCallFistMethod(t *testing.T) {
 		t.Error("The message is not found")
 	}
 
-	if message != "hello from cln4go.template" {
-		t.Errorf("message received %s different from expected %s", message, "hello from cln4go.template")
+	if message != "Server up and running,/ listen and serve on 0.0.0.0:8080 " {
+		t.Errorf("message received %s different from expected %s", message, "Server up and running,/ listen and serve on 0.0.0.0:8080 ")
 	}
 }
