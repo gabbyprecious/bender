@@ -1,13 +1,16 @@
 package plugin
 
 import (
+	"archive/zip"
 	"fmt"
-	// "log"
+	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 	"github.com/vincenzopalazzo/cln4go/plugin"
+	// "strconv"
 )
 
 type PluginState struct {
@@ -19,31 +22,113 @@ type Login struct {
 	Password string `json:"password" binding:"required"`
 }
 
-type TLSFiles struct {
-	Ca        string `json:"ca"`
-	ClientKey string `json:"client_key"`
-	Client    string `json:"client"`
+func zipSource(source, target string) error {
+	// 1. Create a ZIP file and zip.Writer
+	f, err := os.Create(target)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	writer := zip.NewWriter(f)
+	defer writer.Close()
+
+	// 2. Go through all the files of the source
+	return filepath.Walk(source, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// 3. Create a local file header
+		header, err := zip.FileInfoHeader(info)
+		if err != nil {
+			return err
+		}
+
+		// set compression
+		header.Method = zip.Deflate
+
+		// 4. Set relative path of a file as the header name
+		header.Name, err = filepath.Rel(filepath.Dir(source), path)
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			header.Name += "/"
+		}
+
+		// 5. Create writer for the file header and save content of the file
+		headerWriter, err := writer.CreateHeader(header)
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		f, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+
+		_, err = io.Copy(headerWriter, f)
+		return err
+	})
 }
 
-func readTlsFile() (TLSFiles, error) {
+func copy(src, dst string) (int64, error) {
+	sourceFileStat, err := os.Stat(src)
+	if err != nil {
+		return 0, err
+	}
+
+	if !sourceFileStat.Mode().IsRegular() {
+		return 0, fmt.Errorf("%s is not a regular file", src)
+	}
+
+	source, err := os.Open(src)
+	if err != nil {
+		return 0, err
+	}
+	defer source.Close()
+
+	destination, err := os.Create(dst)
+	if err != nil {
+		return 0, err
+	}
+	defer destination.Close()
+	nBytes, err := io.Copy(destination, source)
+	return nBytes, err
+}
+
+func createDownloadDir() (string, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
-		return TLSFiles{}, err
+		return "", err
 	}
-	clientKey, err := os.ReadFile(home + "/.lightning/testnet/client-key.pem")
+	sourcePath := home + "/download_tls"
+	err = os.MkdirAll(sourcePath, 0755)
 	if err != nil {
-		return TLSFiles{}, err
+		return "", err
 	}
-	ca, err := os.ReadFile(home + "/.lightning/testnet/ca.pem")
-	if err != nil {
-		return TLSFiles{}, err
+
+	targetPath := filepath.Join(home, "/.lightning/testnet")
+
+	files := []string{"ca.pem", "client-key.pem", "client.pem"}
+
+	fmt.Println("")
+
+	for _, file := range files {
+		targetFile := filepath.Join(targetPath, file)
+		sourceFile := filepath.Join(sourcePath, file)
+		_, err := copy(targetFile, sourceFile)
+		if err != nil {
+			return "", err
+		}
 	}
-	client, err := os.ReadFile(home + "/.lightning/testnet/client.pem")
-	if err != nil {
-		return TLSFiles{}, err
-	}
-	files := TLSFiles{Ca: string(ca), ClientKey: string(clientKey), Client: string(client)}
-	return files, nil
+	return sourcePath, nil
 }
 
 type StartServer[T PluginState] struct{}
@@ -69,32 +154,46 @@ func (instance *StartServer[T]) Call(plugin *plugin.Plugin[PluginState], request
 			c.JSON(403, gin.H{"status": "Access Denied"})
 			return
 		}
-		data, err := readTlsFile()
+		targetPath, err := createDownloadDir()
 		if err != nil {
-			c.JSON(404, gin.H{"error from tls files": err.Error()})
+			c.String(403, err.Error())
 			return
 		}
-		c.JSON(200, gin.H{"data": &data})
+		fileName := "certificates.zip"
+		zipTargetPath := filepath.Join(targetPath, fileName)
+		err = zipSource(targetPath, zipTargetPath)
+		if err != nil {
+			c.String(403, err.Error())
+			return
+		}
+		c.Header("Content-Description", "File Transfer")
+		c.Header("Content-Transfer-Encoding", "binary")
+		c.Header("Content-Disposition", "attachment; filename="+fileName)
+		c.Header("Content-Type", "application/octet-stream")
+		c.File(zipTargetPath)
+		os.RemoveAll(targetPath)
 	})
+	portValue, found := plugin.GetOpt("bender_port")
 
-	plugin.State.Server = &http.Server{
-		Addr:    ":8080",
-		Handler: router,
+	/// TODO: disable the plugin if we do not insert the port
+	if !found || portValue == "-1" {
+		portValue = "9080"
 	}
 
-	var serverError error
+	plugin.State.Server = &http.Server{
+		Addr:    fmt.Sprintf(":%v", portValue),
+		Handler: router,
+	}
 
 	go func() {
 		// service connections
 		if err := plugin.State.Server.ListenAndServe(); err != nil {
-			serverError = fmt.Errorf("gin framework error: %s", err)
+			//plugin.Log("info", fmt.Sprintf("error received from server: %s", err))
+			plugin.State.Server = nil
 		}
-		serverError = nil
 	}()
-	if serverError != nil {
-		return nil, serverError
-	}
-	return map[string]any{"message": "Server up and running,/ listen and serve on 0.0.0.0:8080 "}, nil
+
+	return map[string]any{"message": "Server up and running listen and serve on 0.0.0.0:" + fmt.Sprintf("%v", portValue)}, nil
 }
 
 type SetPassword[T PluginState] struct{}
