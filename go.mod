@@ -4,7 +4,7 @@ go 1.18
 
 require github.com/vincenzopalazzo/cln4go/plugin v0.0.0-20220812203530-a59f9a465f10
 
-require github.com/vincenzopalazzo/cln4go v0.0.1-beta.1.0.20220814142700-20445adf4f73 // indirect
+require github.com/vincenzopalazzo/cln4go v0.0.1-beta.1.0.20220814145435-6f91fa93dfa4 // indirect
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect

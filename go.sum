@@ -66,6 +66,8 @@ github.com/vincenzopalazzo/cln4go v0.0.1-beta.1.0.20220814142508-76cf6473cb88 h1
 github.com/vincenzopalazzo/cln4go v0.0.1-beta.1.0.20220814142508-76cf6473cb88/go.mod h1:2NnveaBEhWeXc6SAyTLGIYRJsVq+5RjTRKh105b8Y2M=
 github.com/vincenzopalazzo/cln4go v0.0.1-beta.1.0.20220814142700-20445adf4f73 h1:gJ8mNU6CNAVO7PKGg5FarSz7XO4aFGx2n4Jlt9ihH6w=
 github.com/vincenzopalazzo/cln4go v0.0.1-beta.1.0.20220814142700-20445adf4f73/go.mod h1:2NnveaBEhWeXc6SAyTLGIYRJsVq+5RjTRKh105b8Y2M=
+github.com/vincenzopalazzo/cln4go v0.0.1-beta.1.0.20220814145435-6f91fa93dfa4 h1:5icHn2QOIWY3PMNjho291BHQY0YgnUyKAw8WmwqxIgU=
+github.com/vincenzopalazzo/cln4go v0.0.1-beta.1.0.20220814145435-6f91fa93dfa4/go.mod h1:2NnveaBEhWeXc6SAyTLGIYRJsVq+5RjTRKh105b8Y2M=
 github.com/vincenzopalazzo/cln4go/client v0.0.0-20220802085837-fb816fecb890 h1:ylUf6ddD7TGHC+CXrAq0EQr5EsPVRYuiHDlPs1AIXf4=
 github.com/vincenzopalazzo/cln4go/client v0.0.0-20220802085837-fb816fecb890/go.mod h1:7X4Hn+hwG3Ts/S3tgEqsowfUHZqyjx7/1z/8oDw7Muw=
 github.com/vincenzopalazzo/cln4go/comm v0.0.0-20220802085837-fb816fecb890 h1:NvP9FlygyCWYaZizyxTdGBe3yRuzPzdnoxz3g28PAps=
