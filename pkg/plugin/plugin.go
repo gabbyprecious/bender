@@ -2,11 +2,14 @@ package plugin
 
 import (
 	"archive/zip"
+	"context"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/vincenzopalazzo/cln4go/plugin"
@@ -103,22 +106,21 @@ func copy(src, dst string) (int64, error) {
 	return nBytes, err
 }
 
-func createDownloadDir() (string, error) {
-	home, err := os.UserHomeDir()
-	if err != nil {
-		return "", err
+func (instance *StartServer[T]) createDownloadDir(plugin *plugin.Plugin[PluginState]) (string, error) {
+
+	clnPath, found := plugin.GetConf("lightning-dir")
+	if !found {
+		return "", fmt.Errorf("lightning-dir not found in config")
 	}
-	sourcePath := home + "/download_tls"
-	err = os.MkdirAll(sourcePath, 0755)
+	sourcePath := strings.Join([]string{clnPath.(string), "bender"}, "/")
+	err := os.MkdirAll(sourcePath, 0755)
 	if err != nil {
 		return "", err
 	}
 
-	targetPath := filepath.Join(home, "/.lightning/testnet")
+	targetPath := filepath.Join(clnPath.(string))
 
 	files := []string{"ca.pem", "client-key.pem", "client.pem"}
-
-	fmt.Println("")
 
 	for _, file := range files {
 		targetFile := filepath.Join(targetPath, file)
@@ -154,23 +156,19 @@ func (instance *StartServer[T]) Call(plugin *plugin.Plugin[PluginState], request
 			c.JSON(403, gin.H{"status": "Access Denied"})
 			return
 		}
-		targetPath, err := createDownloadDir()
+		targetPath, err := instance.createDownloadDir(plugin)
 		if err != nil {
-			c.String(403, err.Error())
+			c.JSON(403, err)
 			return
 		}
 		fileName := "certificates.zip"
 		zipTargetPath := filepath.Join(targetPath, fileName)
 		err = zipSource(targetPath, zipTargetPath)
 		if err != nil {
-			c.String(403, err.Error())
+			c.JSON(403, err)
 			return
 		}
-		c.Header("Content-Description", "File Transfer")
-		c.Header("Content-Transfer-Encoding", "binary")
-		c.Header("Content-Disposition", "attachment; filename="+fileName)
-		c.Header("Content-Type", "application/octet-stream")
-		c.File(zipTargetPath)
+		c.FileAttachment(zipTargetPath, fileName)
 		os.RemoveAll(targetPath)
 	})
 	portValue, found := plugin.GetOpt("bender_port")
@@ -211,6 +209,11 @@ func (instance *Hello[PluginState]) Call(plugin *plugin.Plugin[PluginState], req
 
 type OnShutdown[T PluginState] struct{}
 
-func (instance *OnShutdown[PluginState]) Call(plugin *plugin.Plugin[PluginState], request map[string]any) {
+func (instance *OnShutdown[T]) Call(plugin *plugin.Plugin[PluginState], request map[string]any) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := plugin.State.Server.Shutdown(ctx); err != nil {
+		panic(err)
+	}
 	os.Exit(0)
 }
