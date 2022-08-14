@@ -22,7 +22,7 @@ check:
 	$(CC) test -v ./...
 
 build:
-	env GOOS=$(OS) GOARCH=$(ARCH) GOARM=$(ARM) $(CC) build -o $(NAME)-$(OS)-$(ARCH) cmd/plugin.go
+	env GOOS=$(OS) GOARCH=$(ARCH) $(CC) build -o $(NAME)-$(OS)-$(ARCH) cmd/plugin.go
 
 dep:
 	$(CC) mod vendor

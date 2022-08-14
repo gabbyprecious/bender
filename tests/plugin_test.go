@@ -11,11 +11,22 @@ func TestCallFistMethod(t *testing.T) {
 	path := os.Getenv("CLN_UNIX_SOCKET")
 	client, err := client.NewUnix(path)
 	if err != nil {
-		panic(err)
+		t.Errorf("Error: %s", err)
 	}
-	response, err := client.Call("hello", make(map[string]interface{}))
+
+	password_response, err := client.Call("bender_set_password", map[string]any{"password": "alibaba"})
 	if err != nil {
-		panic(err)
+		t.Errorf("Error: %s", err)
+	}
+
+	_, found := password_response["message"]
+	if !found {
+		t.Error("The message is not found")
+	}
+
+	response, err := client.Call("bender_run_server", make(map[string]interface{}))
+	if err != nil {
+		t.Errorf("Error: %s", err)
 	}
 
 	message, found := response["message"]
@@ -23,7 +34,7 @@ func TestCallFistMethod(t *testing.T) {
 		t.Error("The message is not found")
 	}
 
-	if message != "hello from cln4go.template" {
-		t.Errorf("message received %s different from expected %s", message, "hello from cln4go.template")
+	if message != "Server up and running,/ listen and serve on 0.0.0.0:9080" {
+		t.Errorf("message received %s different from expected %s", message, "Server up and running,/ listen and serve on 0.0.0.0:8080")
 	}
 }
