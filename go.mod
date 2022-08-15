@@ -2,7 +2,7 @@ module github.com/vincenzopalazzo/bender
 
 go 1.18
 
-require github.com/vincenzopalazzo/cln4go/plugin v0.0.0-20220814201941-66f960797315
+require github.com/vincenzopalazzo/cln4go/plugin v0.0.0-20220814212832-655f65328877
 
 require github.com/vincenzopalazzo/cln4go v0.0.1-beta.1.0.20220814212832-655f65328877 // indirect
 
@@ -15,16 +15,15 @@ require (
 	github.com/goccy/go-json v0.9.10 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
-	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.2 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
-	github.com/vincenzopalazzo/cln4go/client v0.0.0-20220814201941-66f960797315
-	github.com/vincenzopalazzo/cln4go/comm v0.0.0-20220814201941-66f960797315 // indirect
+	github.com/vincenzopalazzo/cln4go/client v0.0.0-20220814212832-655f65328877
+	github.com/vincenzopalazzo/cln4go/comm v0.0.0-20220814212832-655f65328877 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/net v0.0.0-20220812174116-3211cb980234 // indirect
-	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
 	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
