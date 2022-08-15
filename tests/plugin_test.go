@@ -34,7 +34,7 @@ func TestCallFistMethod(t *testing.T) {
 		t.Error("The message is not found")
 	}
 
-	if message != "Server up and running,/ listen and serve on 0.0.0.0:9080" {
-		t.Errorf("message received %s different from expected %s", message, "Server up and running,/ listen and serve on 0.0.0.0:8080")
+	if message != "Server up and running listen and serve on 0.0.0.0:9080" {
+		t.Errorf("message received %s different from expected %s", message, "Server up and running listen and serve on 0.0.0.0:8080")
 	}
 }
