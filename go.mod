@@ -2,7 +2,7 @@ module github.com/vincenzopalazzo/bender
 
 go 1.18
 
-require github.com/vincenzopalazzo/cln4go/plugin v0.0.0-20220814212832-655f65328877
+require github.com/vincenzopalazzo/cln4go/plugin v0.0.0-20220815094031-4a3a679dc176
 
 require github.com/vincenzopalazzo/cln4go v0.0.1-beta.1.0.20220814212832-655f65328877 // indirect
 
@@ -20,8 +20,8 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.2 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
-	github.com/vincenzopalazzo/cln4go/client v0.0.0-20220814212832-655f65328877
-	github.com/vincenzopalazzo/cln4go/comm v0.0.0-20220814212832-655f65328877 // indirect
+	github.com/vincenzopalazzo/cln4go/client v0.0.0-20220815094031-4a3a679dc176
+	github.com/vincenzopalazzo/cln4go/comm v0.0.0-20220815094031-4a3a679dc176 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/net v0.0.0-20220812174116-3211cb980234 // indirect
 	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
