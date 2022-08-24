@@ -1,0 +1,16 @@
+{
+  "package_name": "bender",
+  "version": "v0.0.1-beta.1",
+  "api": {
+    "name": "github",
+    "repository": "vincenzopalazzo/bender",
+    "branch": "master"
+  },
+  "generation_method": {
+    "name": "semver-v2",
+    "header_filter": false
+  },
+  "serialization_method": {
+    "name": "md"
+  }
+}
